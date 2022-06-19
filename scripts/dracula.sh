@@ -18,6 +18,7 @@ main()
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
   show_military=$(get_tmux_option "@dracula-military-time" false)
+  show_time_only=$(get_tmux_option "@dracula-show-time-only" false)
   show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
@@ -181,7 +182,9 @@ main()
 
     if [ $plugin = "time" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-time-colors" "dark_purple white")
-      if $show_day_month && $show_military ; then # military time and dd/mm
+      if $show_time_only; then # only time
+        script="%R ${timezone} "
+      elif $show_day_month && $show_military ; then # military time and dd/mm
         script="%a %d/%m %R ${timezone} "
       elif $show_military; then # only military time
         script="%a %m/%d %R ${timezone} "
